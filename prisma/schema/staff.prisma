@@ -10,4 +10,6 @@ enum Role {
   PANEL
   MANAGER
   ACADEMIC
+
+  @@map("role")
 }

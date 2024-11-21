@@ -1,11 +1,11 @@
 -- CreateEnum
-CREATE TYPE "Role" AS ENUM ('PANEL', 'MANAGER', 'ACADEMIC');
+CREATE TYPE "role" AS ENUM ('PANEL', 'MANAGER', 'ACADEMIC');
 
 -- CreateTable
 CREATE TABLE "staff" (
     "id" SERIAL NOT NULL,
     "email" TEXT NOT NULL,
-    "role" "Role" NOT NULL,
+    "role" "role" NOT NULL,
 
     CONSTRAINT "staff_pkey" PRIMARY KEY ("id")
 );
