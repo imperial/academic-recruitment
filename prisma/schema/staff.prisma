@@ -1,0 +1,13 @@
+model Staff {
+  id    Int    @id @default(autoincrement())
+  email String @unique
+  role  Role
+
+  @@map("staff")
+}
+
+enum Role {
+  PANEL
+  MANAGER
+  ACADEMIC
+}
