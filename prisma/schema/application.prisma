@@ -1,0 +1,33 @@
+enum Stage {
+  NEW_APPLICATION
+  FOR_CONSIDERATION
+  SHORTLISTED
+  INTERVIEW_ARRANGED
+  INTERVIEW_COMPLETE
+  DECISION_MADE
+  CANDIDATE_INFORMED
+
+  @@map("stage")
+}
+
+enum Decision {
+  PENDING
+  HIRE
+  DEFER
+  REJECT
+
+  @@map("decision")
+}
+
+model Application {
+  id              Int      @id @default(autoincrement())
+  round           String
+  firstName       String   @map("first_name")
+  lastName        String   @map("last_name")
+  referenceNumber String   @unique @map("reference_number")
+  edi             Boolean
+  stage           Stage
+  decision        Decision
+
+  @@map("application")
+}

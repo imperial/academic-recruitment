@@ -1,19 +1,32 @@
 import { faker } from '@faker-js/faker'
-import { PrismaClient, Role } from '@prisma/client'
+import { Decision, PrismaClient, Role, Stage } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
-const createStaff = () => {
+function createStaff() {
   return {
     email: faker.internet.email(),
     role: faker.helpers.arrayElement(Object.keys(Role)) as Role
   }
 }
 
-async function main() {
-  for (let i = 0; i < 3; i++) {
-    await prisma.staff.create({ data: createStaff() })
+function createApplication(round: string) {
+  return {
+    round: round,
+    firstName: faker.person.firstName(),
+    lastName: faker.person.lastName(),
+    referenceNumber: faker.string.numeric({ length: 10 }),
+    edi: faker.datatype.boolean(),
+    stage: faker.helpers.arrayElement(Object.keys(Stage)) as Stage,
+    decision: faker.helpers.arrayElement(Object.keys(Decision)) as Decision
   }
+}
+
+async function main() {
+  for (let i = 0; i < 3; i++) await prisma.staff.create({ data: createStaff() })
+
+  for (let i = 0; i < 10; i++)
+    await prisma.application.create({ data: createApplication('Lecturer 2425') })
 }
 
 main()
