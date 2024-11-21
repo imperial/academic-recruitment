@@ -3,12 +3,12 @@
 import { Table } from '@radix-ui/themes'
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 
-interface GenericTableProps<T, V = unknown> {
+interface GenericTableProps<T, V> {
   data: T[]
   columns: ColumnDef<T, V>[]
 }
 
-const GenericTable = <T,>({ data, columns }: GenericTableProps<T>) => {
+const GenericTable = <T, V>({ data, columns }: GenericTableProps<T, V>) => {
   const table = useReactTable({
     data,
     columns,
