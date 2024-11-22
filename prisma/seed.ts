@@ -26,7 +26,7 @@ async function main() {
   for (let i = 0; i < 3; i++) await prisma.staff.create({ data: createStaff() })
 
   for (let i = 0; i < 10; i++)
-    await prisma.application.create({ data: createApplication('Lecturer 2425') })
+    await prisma.application.create({ data: createApplication('Lecturer') })
 }
 
 main()
