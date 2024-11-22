@@ -1,7 +1,8 @@
 'use client'
 
 import Dropdown from '@/components/Dropdown'
-import GenericTable from '@/components/GenericTable'
+import FieldDialog from '@/components/dialog/FieldDialog'
+import GenericTable from '@/components/table/GenericTable'
 import { prettifyCapitalisedEnumValue } from '@/lib/utils'
 import { Application, Stage } from '@prisma/client'
 import { Flex, Text } from '@radix-ui/themes'
@@ -45,6 +46,11 @@ const ApplicationTable: FC<ApplicationTableProps> = ({ applications }) => {
         cell: (info) => prettifyCapitalisedEnumValue(info.getValue()),
         header: 'Stage',
         id: 'stage'
+      }),
+      columnHelper.display({
+        id: 'forms',
+        header: 'Forms',
+        cell: () => <FieldDialog />
       })
     ],
     [columnHelper]

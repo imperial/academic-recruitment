@@ -1,5 +1,5 @@
-import ApplicationTable from '@/components/ApplicationTable'
 import PageFrame from '@/components/PageFrame'
+import ApplicationTable from '@/components/table/ApplicationTable'
 import { getAllApplications } from '@/lib/query'
 import { Flex, Heading } from '@radix-ui/themes'
 
