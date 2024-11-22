@@ -20,14 +20,15 @@ enum Decision {
 }
 
 model Application {
-  id              Int      @id @default(autoincrement())
+  id              Int                        @id @default(autoincrement())
   round           String
-  firstName       String   @map("first_name")
-  lastName        String   @map("last_name")
-  referenceNumber String   @unique @map("reference_number")
+  firstName       String                     @map("first_name")
+  lastName        String                     @map("last_name")
+  referenceNumber String                     @unique @map("reference_number")
   edi             Boolean
   stage           Stage
   decision        Decision
+  researchFields  ApplicationResearchField[]
 
   @@map("application")
 }

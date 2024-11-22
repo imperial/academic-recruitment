@@ -1,0 +1,17 @@
+model ResearchField {
+  id                       Int                        @id @default(autoincrement())
+  name                     String                     @unique
+  ApplicationResearchField ApplicationResearchField[]
+
+  @@map("research_field")
+}
+
+model ApplicationResearchField {
+  id              Int           @id @default(autoincrement())
+  applicationId   Int           @map("application_id")
+  application     Application   @relation(fields: [applicationId], references: [id])
+  researchFieldId Int           @map("research_field_id")
+  researchField   ResearchField @relation(fields: [researchFieldId], references: [id])
+
+  @@map("application_research_field")
+}
