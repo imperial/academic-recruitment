@@ -1,18 +1,38 @@
 'use client'
 
 import { Table } from '@radix-ui/themes'
-import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
+import {
+  ColumnDef,
+  OnChangeFn,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  useReactTable
+} from '@tanstack/react-table'
+import { ColumnFiltersState } from '@tanstack/table-core'
 
-interface GenericTableProps<T, V> {
+interface GenericTableProps<T> {
   data: T[]
-  columns: ColumnDef<T, V>[]
+  columns: ColumnDef<T, any>[]
+  columnFilters: ColumnFiltersState
+  setColumnFilters: OnChangeFn<ColumnFiltersState>
 }
 
-const GenericTable = <T, V>({ data, columns }: GenericTableProps<T, V>) => {
+const GenericTable = <T,>({
+  data,
+  columns,
+  columnFilters,
+  setColumnFilters
+}: GenericTableProps<T>) => {
   const table = useReactTable({
     data,
     columns,
-    getCoreRowModel: getCoreRowModel()
+    getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    onColumnFiltersChange: setColumnFilters,
+    state: {
+      columnFilters
+    }
   })
 
   return (
