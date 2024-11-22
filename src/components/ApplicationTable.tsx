@@ -2,6 +2,7 @@
 
 import Dropdown from '@/components/Dropdown'
 import GenericTable from '@/components/GenericTable'
+import { prettifyCapitalisedEnumValue } from '@/lib/utils'
 import { Application, Stage } from '@prisma/client'
 import { Flex, Text } from '@radix-ui/themes'
 import { ColumnFiltersState, createColumnHelper } from '@tanstack/table-core'
@@ -41,7 +42,7 @@ const ApplicationTable: FC<ApplicationTableProps> = ({ applications }) => {
         id: 'edi'
       }),
       columnHelper.accessor('stage', {
-        cell: (info) => info.getValue().toString(),
+        cell: (info) => prettifyCapitalisedEnumValue(info.getValue()),
         header: 'Stage',
         id: 'stage'
       })
