@@ -1,10 +1,11 @@
 'use client'
 
 import Dropdown from '@/components/Dropdown'
-import FieldDialog from '@/components/dialog/FieldDialog'
+import AcademicFieldDialog from '@/components/dialog/AcademicFieldDialog'
 import GenericTable from '@/components/table/GenericTable'
+import { ApplicationResearchFieldWithName } from '@/lib/types'
 import { prettifyCapitalisedEnumValue } from '@/lib/utils'
-import { Application, Stage } from '@prisma/client'
+import { Application, ResearchField, Stage } from '@prisma/client'
 import { Flex, Text } from '@radix-ui/themes'
 import { ColumnFiltersState, createColumnHelper } from '@tanstack/table-core'
 import { FC, useMemo, useState } from 'react'
@@ -13,9 +14,15 @@ const ALL_DROPDOWN_OPTION = 'All'
 
 interface ApplicationTableProps {
   applications: Application[]
+  allResearchFields: ResearchField[]
+  applicationsWithResearchFields: ApplicationResearchFieldWithName[]
 }
 
-const ApplicationTable: FC<ApplicationTableProps> = ({ applications }) => {
+const ApplicationTable: FC<ApplicationTableProps> = ({
+  applications,
+  allResearchFields,
+  applicationsWithResearchFields
+}) => {
   const [stage, setStage] = useState<string>(ALL_DROPDOWN_OPTION)
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
 
@@ -50,7 +57,15 @@ const ApplicationTable: FC<ApplicationTableProps> = ({ applications }) => {
       columnHelper.display({
         id: 'forms',
         header: 'Forms',
-        cell: () => <FieldDialog />
+        cell: (info) => (
+          <AcademicFieldDialog
+            applicationId={info.row.original.id}
+            allResearchFields={allResearchFields}
+            applicationResearchFields={applicationsWithResearchFields
+              .filter((awrf) => awrf.applicationId === info.row.original.id)
+              .map((awrf) => awrf.researchField.name)}
+          />
+        )
       })
     ],
     [columnHelper]
