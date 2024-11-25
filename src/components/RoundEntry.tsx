@@ -1,21 +1,20 @@
 'use client'
 
-import { Button, Flex, Text, TextField } from '@radix-ui/themes'
+import Dropdown from '@/components/Dropdown'
+import { Button, Flex, Text } from '@radix-ui/themes'
 import { FC, useState } from 'react'
 
-const RoundEntry: FC = () => {
-  const [round, setRound] = useState('')
+interface RoundEntryProps {
+  allRounds: string[]
+}
+
+const RoundEntry: FC<RoundEntryProps> = ({ allRounds }) => {
+  const [round, setRound] = useState<string>(allRounds ? allRounds[0] : '')
 
   return (
     <Flex direction="column" gap="2">
       <Text size="3">Enter the recruitment round: </Text>
-      <TextField.Root
-        id="round"
-        name="round"
-        required
-        value={round}
-        onChange={(e) => setRound(e.target.value)}
-      />
+      <Dropdown choices={allRounds} currentChoice={round} onChoiceChange={setRound} />
       <Button type="button" onClick={() => (window.location.href = `/applications/${round}`)}>
         View round
       </Button>

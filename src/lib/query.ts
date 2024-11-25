@@ -3,6 +3,20 @@ import { ApplicationResearchField, ResearchField } from '@prisma/client'
 
 import prisma from '../../db'
 
+export async function getAllApplicationRounds(): Promise<string[]> {
+  return prisma.application
+    .findMany({
+      select: {
+        round: true
+      },
+      distinct: ['round'],
+      orderBy: {
+        round: 'asc'
+      }
+    })
+    .then((applications) => applications.map((application) => application.round))
+}
+
 export async function getAllApplicationsWithResearchFields(
   round: string
 ): Promise<ApplicationRow[]> {
