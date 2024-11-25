@@ -6,7 +6,7 @@ import GenericTable from '@/components/table/GenericTable'
 import { ApplicationResearchFieldWithName } from '@/lib/types'
 import { prettifyCapitalisedEnumValue } from '@/lib/utils'
 import { Application, ResearchField, Stage } from '@prisma/client'
-import { Flex, Text } from '@radix-ui/themes'
+import { Card, Flex, Text } from '@radix-ui/themes'
 import { ColumnFiltersState, createColumnHelper } from '@tanstack/table-core'
 import { FC, useMemo, useState } from 'react'
 
@@ -77,23 +77,25 @@ const ApplicationTable: FC<ApplicationTableProps> = ({
         )
       })
     ],
-    [columnHelper]
+    [columnHelper, allResearchFields, applicationsWithResearchFields]
   )
 
   return (
     <Flex direction="column" gap="1">
-      <Flex align="center" justify="start" gap="2">
-        <Text>Stage:</Text>
-        <Dropdown
-          choices={[ALL_DROPDOWN_OPTION, ...Object.keys(Stage)]}
-          currentChoice={stage}
-          onChoiceChange={(value) => {
-            setStage(value)
-            if (value === ALL_DROPDOWN_OPTION) setColumnFilters([])
-            else setColumnFilters([{ id: 'stage', value }])
-          }}
-        />
-      </Flex>
+      <Card className="bg-yellow-200">
+        <Flex gap="2" align="center">
+          <Text>Stage:</Text>
+          <Dropdown
+            choices={[ALL_DROPDOWN_OPTION, ...Object.keys(Stage)]}
+            currentChoice={stage}
+            onChoiceChange={(value) => {
+              setStage(value)
+              if (value === ALL_DROPDOWN_OPTION) setColumnFilters([])
+              else setColumnFilters([{ id: 'stage', value }])
+            }}
+          />
+        </Flex>
+      </Card>
       <GenericTable
         data={applications}
         columns={columns}
