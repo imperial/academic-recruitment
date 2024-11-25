@@ -2,15 +2,15 @@
 
 import Dropdown from '@/components/Dropdown'
 import AcademicFieldDialog from '@/components/dialog/AcademicFieldDialog'
-import GenericTable from '@/components/table/GenericTable'
+import GenericTable, { updateOrAddColumnFilter } from '@/components/table/GenericTable'
 import { ApplicationResearchFieldWithName } from '@/lib/types'
 import { prettifyCapitalisedEnumValue } from '@/lib/utils'
 import { Application, ResearchField, Stage } from '@prisma/client'
 import { Card, Flex, Text } from '@radix-ui/themes'
-import { ColumnFiltersState, createColumnHelper } from '@tanstack/table-core'
+import { ColumnFilter, ColumnFiltersState, createColumnHelper } from '@tanstack/table-core'
 import { FC, useMemo, useState } from 'react'
 
-const ALL_DROPDOWN_OPTION = 'All'
+export const ALL_DROPDOWN_OPTION = 'All'
 
 interface ApplicationTableProps {
   applications: Application[]
@@ -23,7 +23,8 @@ const ApplicationTable: FC<ApplicationTableProps> = ({
   allResearchFields,
   applicationsWithResearchFields
 }) => {
-  const [stage, setStage] = useState<string>(ALL_DROPDOWN_OPTION)
+  const [stageFilter, setStageFilter] = useState<string>(ALL_DROPDOWN_OPTION)
+  const [researchFieldFilter, setResearchFieldFilter] = useState<string>(ALL_DROPDOWN_OPTION)
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
 
   const columnHelper = createColumnHelper<Application>()
@@ -56,7 +57,13 @@ const ApplicationTable: FC<ApplicationTableProps> = ({
           applicationsWithResearchFields
             .filter((awrf) => awrf.applicationId === info.row.original.id)
             .map((awrf) => awrf.researchField.name)
-            .join(', ')
+            .join(', '),
+        filterFn: (row, _columnId, filterValue) => {
+          return applicationsWithResearchFields
+            .filter((awrf) => awrf.applicationId === row.original.id)
+            .map((awrf) => awrf.researchField.name)
+            .includes(filterValue)
+        }
       }),
       columnHelper.accessor('stage', {
         cell: (info) => prettifyCapitalisedEnumValue(info.getValue()),
@@ -87,11 +94,25 @@ const ApplicationTable: FC<ApplicationTableProps> = ({
           <Text>Stage:</Text>
           <Dropdown
             choices={[ALL_DROPDOWN_OPTION, ...Object.keys(Stage)]}
-            currentChoice={stage}
+            currentChoice={stageFilter}
             onChoiceChange={(value) => {
-              setStage(value)
-              if (value === ALL_DROPDOWN_OPTION) setColumnFilters([])
-              else setColumnFilters([{ id: 'stage', value }])
+              updateColumnFilters(setStageFilter, value, 'stage', setColumnFilters, columnFilters)
+            }}
+            valueFormatter={prettifyCapitalisedEnumValue}
+          />
+
+          <Text>Research Field:</Text>
+          <Dropdown
+            choices={[ALL_DROPDOWN_OPTION, ...allResearchFields.map((field) => field.name)]}
+            currentChoice={researchFieldFilter}
+            onChoiceChange={(value) => {
+              updateColumnFilters(
+                setResearchFieldFilter,
+                value,
+                'fields',
+                setColumnFilters,
+                columnFilters
+              )
             }}
           />
         </Flex>
@@ -104,6 +125,21 @@ const ApplicationTable: FC<ApplicationTableProps> = ({
       />
     </Flex>
   )
+}
+
+function updateColumnFilters(
+  setFilter: (value: ((prevState: string) => string) | string) => void,
+  value: string,
+  columnId: string,
+  setColumnFilters: (
+    value: ((prevState: ColumnFilter[]) => ColumnFilter[]) | ColumnFilter[]
+  ) => void,
+  columnFilters: ColumnFilter[]
+) {
+  setFilter(value)
+  if (value === ALL_DROPDOWN_OPTION)
+    setColumnFilters(columnFilters.filter((filter) => filter.id !== columnId))
+  else setColumnFilters(updateOrAddColumnFilter(columnFilters, columnId, value))
 }
 
 export default ApplicationTable

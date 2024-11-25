@@ -3,26 +3,30 @@
 import { Table } from '@radix-ui/themes'
 import {
   ColumnDef,
+  FilterFn,
   OnChangeFn,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   useReactTable
 } from '@tanstack/react-table'
-import { ColumnFiltersState } from '@tanstack/table-core'
+import { ColumnFilter, ColumnFiltersState } from '@tanstack/table-core'
+import { produce } from 'immer'
 
 interface GenericTableProps<T> {
   data: T[]
   columns: ColumnDef<T, any>[]
   columnFilters: ColumnFiltersState
   setColumnFilters: OnChangeFn<ColumnFiltersState>
+  customFilterFn?: FilterFn<any>
 }
 
 const GenericTable = <T,>({
   data,
   columns,
   columnFilters,
-  setColumnFilters
+  setColumnFilters,
+  customFilterFn = () => true
 }: GenericTableProps<T>) => {
   const table = useReactTable({
     data,
@@ -32,6 +36,9 @@ const GenericTable = <T,>({
     onColumnFiltersChange: setColumnFilters,
     state: {
       columnFilters
+    },
+    filterFns: {
+      customFilter: customFilterFn
     }
   })
 
@@ -70,6 +77,18 @@ const GenericTable = <T,>({
       </Table.Root>
     </>
   )
+}
+
+export function updateOrAddColumnFilter(
+  columnFilters: ColumnFilter[],
+  columnId: string,
+  value: string
+): ColumnFilter[] {
+  return produce(columnFilters, (draft) => {
+    const index = draft.findIndex((filter) => filter.id === columnId)
+    if (index === -1) draft.push({ id: columnId, value })
+    else draft[index].value = value
+  })
 }
 
 export default GenericTable

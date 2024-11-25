@@ -1,4 +1,3 @@
-import { prettifyCapitalisedEnumValue } from '@/lib/utils'
 import { Select } from '@radix-ui/themes'
 import React, { FC } from 'react'
 
@@ -13,7 +12,7 @@ const Dropdown: FC<DropdownProps> = ({
   choices,
   currentChoice,
   onChoiceChange,
-  valueFormatter = prettifyCapitalisedEnumValue
+  valueFormatter = (value) => value
 }) => {
   return (
     <Select.Root onValueChange={onChoiceChange} value={currentChoice}>
