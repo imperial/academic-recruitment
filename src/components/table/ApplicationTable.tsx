@@ -49,6 +49,15 @@ const ApplicationTable: FC<ApplicationTableProps> = ({
         header: 'EDI',
         id: 'edi'
       }),
+      columnHelper.display({
+        id: 'fields',
+        header: 'Research Fields',
+        cell: (info) =>
+          applicationsWithResearchFields
+            .filter((awrf) => awrf.applicationId === info.row.original.id)
+            .map((awrf) => awrf.researchField.name)
+            .join(', ')
+      }),
       columnHelper.accessor('stage', {
         cell: (info) => prettifyCapitalisedEnumValue(info.getValue()),
         header: 'Stage',
