@@ -5,7 +5,7 @@ import FormWrapper from '@/components/dialog/FormWrapper'
 import GenericDialog from '@/components/dialog/GenericDialog'
 import { addAcademicField } from '@/lib/forms'
 import { ResearchField } from '@prisma/client'
-import { Button, Flex, Text } from '@radix-ui/themes'
+import { Badge, Button, Flex, Text } from '@radix-ui/themes'
 import { FC, useState } from 'react'
 
 interface AcademicFieldDialogProps {
@@ -25,7 +25,7 @@ const AcademicFieldDialog: FC<AcademicFieldDialogProps> = ({
 
   return (
     <GenericDialog
-      title="Academic Field"
+      title="Academic Fields"
       isOpen={isOpen}
       onOpenChange={setIsOpen}
       trigger={
@@ -36,18 +36,25 @@ const AcademicFieldDialog: FC<AcademicFieldDialogProps> = ({
     >
       <FormWrapper action={addAcademicField} onSuccess={handleFormSuccess}>
         <Flex direction="column" gap="3">
-          <Text>Current Fields:</Text>
-          {applicationResearchFields.map((field) => (
-            <Text key={field} weight="medium">
-              {field}
-            </Text>
-          ))}
+          {applicationResearchFields.length === 0 ? (
+            <Text>No fields added yet.</Text>
+          ) : (
+            <Flex gap="2" wrap="wrap">
+              {applicationResearchFields.map((field) => (
+                <Badge key={field} size="3">
+                  {field}
+                </Badge>
+              ))}
+            </Flex>
+          )}
+
           <Flex align="center" gap="2">
             <Text>Add Field: </Text>
             <Dropdown
               choices={allResearchFields.map((field) => field.name)}
               currentChoice={newField}
               onChoiceChange={setNewField}
+              valueFormatter={(value) => value}
             />
             <input
               name="researchFieldId"
