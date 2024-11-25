@@ -3,7 +3,6 @@
 import Dropdown from '@/components/Dropdown'
 import AcademicFieldDialog from '@/components/dialog/AcademicFieldDialog'
 import GenericTable, { updateOrAddColumnFilter } from '@/components/table/GenericTable'
-import { ApplicationResearchFieldWithName } from '@/lib/types'
 import { prettifyCapitalisedEnumValue } from '@/lib/utils'
 import { Application, ResearchField, Stage } from '@prisma/client'
 import { Card, Flex, Text } from '@radix-ui/themes'
@@ -12,22 +11,21 @@ import { FC, useMemo, useState } from 'react'
 
 export const ALL_DROPDOWN_OPTION = 'All'
 
-interface ApplicationTableProps {
-  applications: Application[]
-  allResearchFields: ResearchField[]
-  applicationsWithResearchFields: ApplicationResearchFieldWithName[]
+export type ApplicationRow = Application & {
+  researchFields: ResearchField[]
 }
 
-const ApplicationTable: FC<ApplicationTableProps> = ({
-  applications,
-  allResearchFields,
-  applicationsWithResearchFields
-}) => {
+interface ApplicationTableProps {
+  applications: ApplicationRow[]
+  allResearchFields: ResearchField[]
+}
+
+const ApplicationTable: FC<ApplicationTableProps> = ({ applications, allResearchFields }) => {
   const [stageFilter, setStageFilter] = useState<string>(ALL_DROPDOWN_OPTION)
   const [researchFieldFilter, setResearchFieldFilter] = useState<string>(ALL_DROPDOWN_OPTION)
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
 
-  const columnHelper = createColumnHelper<Application>()
+  const columnHelper = createColumnHelper<ApplicationRow>()
   const columns = useMemo(
     () => [
       columnHelper.accessor('referenceNumber', {
@@ -51,18 +49,11 @@ const ApplicationTable: FC<ApplicationTableProps> = ({
         id: 'edi'
       }),
       columnHelper.display({
-        id: 'fields',
+        id: 'researchFields',
         header: 'Research Fields',
-        cell: (info) =>
-          applicationsWithResearchFields
-            .filter((awrf) => awrf.applicationId === info.row.original.id)
-            .map((awrf) => awrf.researchField.name)
-            .join(', '),
+        cell: (info) => info.row.original.researchFields.map((field) => field.name).join(', '),
         filterFn: (row, _columnId, filterValue) => {
-          return applicationsWithResearchFields
-            .filter((awrf) => awrf.applicationId === row.original.id)
-            .map((awrf) => awrf.researchField.name)
-            .includes(filterValue)
+          return row.original.researchFields.some((field) => field.name === filterValue)
         }
       }),
       columnHelper.accessor('stage', {
@@ -77,14 +68,12 @@ const ApplicationTable: FC<ApplicationTableProps> = ({
           <AcademicFieldDialog
             applicationId={info.row.original.id}
             allResearchFields={allResearchFields}
-            applicationResearchFields={applicationsWithResearchFields
-              .filter((awrf) => awrf.applicationId === info.row.original.id)
-              .map((awrf) => awrf.researchField.name)}
+            applicationResearchFields={info.row.original.researchFields.map((field) => field.name)}
           />
         )
       })
     ],
-    [columnHelper, allResearchFields, applicationsWithResearchFields]
+    [columnHelper, allResearchFields]
   )
 
   return (
@@ -109,7 +98,7 @@ const ApplicationTable: FC<ApplicationTableProps> = ({
               updateColumnFilters(
                 setResearchFieldFilter,
                 value,
-                'fields',
+                'researchFields',
                 setColumnFilters,
                 columnFilters
               )
