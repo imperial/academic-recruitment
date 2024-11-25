@@ -60,7 +60,7 @@ const GenericTable = <T,>({
               className={`align-middle ${i % 2 == 0 ? 'bg-gray-200' : 'bg-white'}`}
             >
               {row.getVisibleCells().map((cell, id) => (
-                <Table.Cell key={id}>
+                <Table.Cell key={id} className="border-r border-gray-500">
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </Table.Cell>
               ))}
