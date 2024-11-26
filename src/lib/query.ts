@@ -1,7 +1,10 @@
 import { ApplicationRow } from '@/components/table/ApplicationTable'
-import { ApplicationResearchField, ResearchField } from '@prisma/client'
+import { $Enums, ApplicationResearchField, CommentType, ResearchField } from '@prisma/client'
+import { string } from 'prop-types'
 
 import prisma from '../../db'
+
+import Rating = $Enums.Rating
 
 export async function getAllApplicationRounds(): Promise<string[]> {
   return prisma.application
@@ -59,6 +62,30 @@ export async function associateApplicationWithField(
     data: {
       applicationId,
       researchFieldId
+    }
+  })
+}
+
+interface CommentForm {
+  applicationId: number
+  text: string
+  authorLogin: string
+}
+
+export async function createNewComment(
+  applicationId: number,
+  text: string,
+  authorLogin: string,
+  rating: Rating,
+  commentType: CommentType
+): Promise<CommentForm> {
+  return prisma.comment.create({
+    data: {
+      applicationId,
+      text,
+      authorLogin,
+      rating,
+      commentType
     }
   })
 }

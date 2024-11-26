@@ -1,15 +1,27 @@
 'use client'
 
 import GenericDialog from '@/components/dialog/GenericDialog'
-import { Button } from '@radix-ui/themes'
+import { createNewComment } from '@/lib/query'
+import { CommentType } from '@prisma/client'
+import { Button, TextArea } from '@radix-ui/themes'
+import { string } from 'prop-types'
 import { FC, useState } from 'react'
+import { useForm } from 'react-hook-form'
 
 interface CommentDialogProps {
   applicationId: number
 }
 
+interface CommentForm {
+  applicationId: number
+  text: string
+  authorLogin: string
+}
+
 const CommentDialog: FC<CommentDialogProps> = ({ applicationId }) => {
   const [isOpen, setIsOpen] = useState(false)
+
+  const { register, handleSubmit } = useForm<CommentForm>()
 
   return (
     <GenericDialog
@@ -22,6 +34,21 @@ const CommentDialog: FC<CommentDialogProps> = ({ applicationId }) => {
         </Button>
       }
     >
+      <form
+        onSubmit={handleSubmit(async (data) => {
+          //await axios.post('/api/comments', data)
+          await createNewComment(data.applicationId, data.text, data.authorLogin, 'YES', 'GENERAL')
+
+          setIsOpen(false)
+        })}
+      >
+        <input type="hidden" {...register('applicationId')} value={applicationId} />
+        <input type="hidden" {...register('authorLogin')} value="" />
+
+        <TextArea {...register('text')} placeholder="add comment"></TextArea>
+        <Button>Add new comment</Button>
+      </form>
+
       <input name="applicationId" type="hidden" value={applicationId} />
     </GenericDialog>
   )
