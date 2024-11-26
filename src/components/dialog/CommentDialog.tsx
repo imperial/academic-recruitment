@@ -1,6 +1,7 @@
 'use client'
 
 import GenericDialog from '@/components/dialog/GenericDialog'
+import { addComment } from '@/lib/forms'
 import { createNewComment } from '@/lib/query'
 import { CommentType } from '@prisma/client'
 import { Button, TextArea } from '@radix-ui/themes'
@@ -12,7 +13,7 @@ interface CommentDialogProps {
   applicationId: number
 }
 
-interface CommentForm {
+export interface CommentForm {
   applicationId: number
   text: string
   authorLogin: string
@@ -37,7 +38,8 @@ const CommentDialog: FC<CommentDialogProps> = ({ applicationId }) => {
       <form
         onSubmit={handleSubmit(async (data) => {
           //await axios.post('/api/comments', data)
-          await createNewComment(data.applicationId, data.text, data.authorLogin, 'YES', 'GENERAL')
+          //await createNewComment(data.applicationId, data.text, data.authorLogin, 'YES', 'GENERAL')
+          await addComment(data)
 
           setIsOpen(false)
         })}
