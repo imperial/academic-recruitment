@@ -25,34 +25,29 @@ export async function getAllApplicationRounds(): Promise<string[]> {
     .then((applications) => applications.map((application) => application.round))
 }
 
-export async function getAllApplicationsWithResearchFields(
-  round: string
-): Promise<ApplicationRow[]> {
-  return prisma.application
-    .findMany({
-      where: {
-        round
-      },
-      include: {
-        researchFields: {
-          include: {
-            researchField: true
-          }
+export async function getAllApplicationRows(round: string): Promise<ApplicationRow[]> {
+  const applications = await prisma.application.findMany({
+    where: {
+      round
+    },
+    include: {
+      researchFields: {
+        include: {
+          researchField: true
         }
       },
-      orderBy: {
-        lastName: 'asc'
-      }
-    })
-    .then((applications) =>
-      applications.map((application) => ({
-        ...application,
-        researchFields: application.researchFields.map((rf) => ({
-          id: rf.researchField.id,
-          name: rf.researchField.name
-        }))
-      }))
-    )
+      comments: true
+    },
+    orderBy: {
+      lastName: 'asc'
+    }
+  })
+
+  return applications.map((application) => ({
+    ...application,
+    researchFields: application.researchFields.map((rf) => rf.researchField),
+    comments: application.comments
+  }))
 }
 
 export async function getAllResearchFields(): Promise<ResearchField[]> {

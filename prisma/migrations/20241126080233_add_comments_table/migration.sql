@@ -16,3 +16,6 @@ CREATE TABLE "comment" (
 
     CONSTRAINT "comment_pkey" PRIMARY KEY ("id")
 );
+
+-- AddForeignKey
+ALTER TABLE "comment" ADD CONSTRAINT "comment_application_id_fkey" FOREIGN KEY ("application_id") REFERENCES "application"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

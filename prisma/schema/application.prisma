@@ -8,6 +8,7 @@ model Application {
   stage           Stage
   decision        Decision
   researchFields  ApplicationResearchField[]
+  comments        Comment[]
 
   @@map("application")
 }

@@ -5,7 +5,7 @@ import AcademicFieldDialog from '@/components/dialog/AcademicFieldDialog'
 import CommentDialog from '@/components/dialog/CommentDialog'
 import GenericTable, { updateOrAddColumnFilter } from '@/components/table/GenericTable'
 import { prettifyCapitalisedEnumValue } from '@/lib/utils'
-import { Application, ResearchField, Stage } from '@prisma/client'
+import { Application, Comment, ResearchField, Stage } from '@prisma/client'
 import { Card, Flex, Text } from '@radix-ui/themes'
 import { ColumnFilter, ColumnFiltersState, createColumnHelper } from '@tanstack/table-core'
 import { FC, useMemo, useState } from 'react'
@@ -14,6 +14,7 @@ export const ALL_DROPDOWN_OPTION = 'All'
 
 export type ApplicationRow = Application & {
   researchFields: ResearchField[]
+  comments: Comment[]
 }
 
 interface ApplicationTableProps {

@@ -1,6 +1,7 @@
 model Comment {
   id            Int         @id @default(autoincrement())
   applicationId Int         @map("application_id")
+  application   Application @relation(fields: [applicationId], references: [id])
   createdAt     DateTime    @default(now()) @map("created_date")
   updatedAt     DateTime    @updatedAt @map("updated_date")
   text          String
