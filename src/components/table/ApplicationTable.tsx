@@ -68,7 +68,10 @@ const ApplicationTable: FC<ApplicationTableProps> = ({ applications, allResearch
         header: 'Actions',
         cell: (info) => (
           <Flex gap="1">
-            <CommentDialog applicationId={info.row.original.id} />
+            <CommentDialog
+              applicationId={info.row.original.id}
+              comments={info.row.original.comments}
+            />
             <AcademicFieldDialog
               applicationId={info.row.original.id}
               allResearchFields={allResearchFields}
