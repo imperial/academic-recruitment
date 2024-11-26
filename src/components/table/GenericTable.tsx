@@ -61,11 +61,8 @@ const GenericTable = <T,>({
         </Table.Header>
 
         <Table.Body>
-          {table.getRowModel().rows.map((row, i) => (
-            <Table.Row
-              key={row.id}
-              className={`align-middle ${i % 2 == 0 ? 'bg-gray-200' : 'bg-white'}`}
-            >
+          {table.getRowModel().rows.map((row) => (
+            <Table.Row key={row.id} className="odd:bg-gray-100">
               {row.getVisibleCells().map((cell, id) => (
                 <Table.Cell key={id} className="border-r border-gray-500">
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
