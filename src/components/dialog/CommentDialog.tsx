@@ -4,6 +4,7 @@ import Dropdown from '@/components/Dropdown'
 import CommentItem from '@/components/dialog/CommentItem'
 import FormWrapper from '@/components/dialog/FormWrapper'
 import GenericDialog from '@/components/dialog/GenericDialog'
+import RatingsTally from '@/components/dialog/RatingsTally'
 import { addComment } from '@/lib/forms'
 import { prettifyCapitalisedEnumValue } from '@/lib/utils'
 import { Comment, CommentType, Rating } from '@prisma/client'
@@ -30,6 +31,7 @@ const CommentDialog: FC<CommentDialogProps> = ({ applicationId, comments }) => {
   const [rating, setRating] = useState<Rating>(Rating.MAYBE)
 
   const { register } = useForm<CommentForm>()
+
   const generalComments = comments.filter((comment) => comment.commentType === CommentType.GENERAL)
   const followingTalkComments = comments.filter(
     (comment) => comment.commentType === CommentType.FOLLOWING_TALK
@@ -59,16 +61,19 @@ const CommentDialog: FC<CommentDialogProps> = ({ applicationId, comments }) => {
 
           <Box pt="3">
             <Tabs.Content value="GENERAL">
+              <RatingsTally comments={generalComments} />
               {generalComments.map((comment) => (
                 <CommentItem key={comment.id} comment={comment} />
               ))}
             </Tabs.Content>
             <Tabs.Content value="FOLLOWING_TALK">
+              <RatingsTally comments={followingTalkComments} />
               {followingTalkComments.map((comment) => (
                 <CommentItem key={comment.id} comment={comment} />
               ))}
             </Tabs.Content>
             <Tabs.Content value="INDIVIDUAL">
+              <RatingsTally comments={individualComments} />
               {individualComments.map((comment) => (
                 <CommentItem key={comment.id} comment={comment} />
               ))}
