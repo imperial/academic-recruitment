@@ -1,0 +1,29 @@
+enum Rating {
+  YES
+  MAYBE
+  NO
+
+  @@map("rating")
+}
+
+enum CommentType {
+  GENERAL
+  FOLLOWING_TALK
+  INDIVIDUAL
+
+  @@map("comment_type")
+}
+
+model Comment {
+  id Int @id @default(autoincrement())
+
+  applicationId Int         @map("application_id")
+  createdAt     DateTime    @default(now()) @map("created_date")
+  updatedAt     DateTime    @updatedAt @map("updated_date")
+  text          String
+  authorLogin   String      @map("author_login")
+  rating        Rating
+  commentType   CommentType @map("comment_type")
+
+  @@map("comment")
+}
