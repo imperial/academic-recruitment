@@ -7,7 +7,7 @@ import { addComment } from '@/lib/forms'
 import { prettifyCapitalisedEnumValue } from '@/lib/utils'
 import { CommentType, Rating } from '@prisma/client'
 import { Pencil2Icon } from '@radix-ui/react-icons'
-import { Box, Button, Flex, Tabs, Text, TextArea } from '@radix-ui/themes'
+import { Box, Flex, Tabs, Text, TextArea } from '@radix-ui/themes'
 import { FC, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -34,11 +34,8 @@ const CommentDialog: FC<CommentDialogProps> = ({ applicationId }) => {
       title="Comments"
       isOpen={isOpen}
       onOpenChange={setIsOpen}
-      trigger={
-        <Button className="min-h-10" color="cyan">
-          Edit Comments
-        </Button>
-      }
+      triggerColor="gray"
+      triggerText="Comments"
     >
       <Box>
         <Tabs.Root

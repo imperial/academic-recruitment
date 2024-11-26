@@ -63,10 +63,11 @@ const ApplicationTable: FC<ApplicationTableProps> = ({ applications, allResearch
         id: 'stage'
       }),
       columnHelper.display({
-        id: 'forms',
-        header: 'Forms',
+        id: 'actions',
+        header: 'Actions',
         cell: (info) => (
           <Flex gap="1">
+            <CommentDialog applicationId={info.row.original.id} />
             <AcademicFieldDialog
               applicationId={info.row.original.id}
               allResearchFields={allResearchFields}
@@ -74,7 +75,6 @@ const ApplicationTable: FC<ApplicationTableProps> = ({ applications, allResearch
                 (field) => field.name
               )}
             />
-            <CommentDialog applicationId={info.row.original.id} />
           </Flex>
         )
       })

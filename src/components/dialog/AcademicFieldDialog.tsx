@@ -5,7 +5,7 @@ import FormWrapper from '@/components/dialog/FormWrapper'
 import GenericDialog from '@/components/dialog/GenericDialog'
 import { addAcademicField } from '@/lib/forms'
 import { ResearchField } from '@prisma/client'
-import { Badge, Button, Flex, Text } from '@radix-ui/themes'
+import { Badge, Flex, Text } from '@radix-ui/themes'
 import { FC, useState } from 'react'
 
 interface AcademicFieldDialogProps {
@@ -28,11 +28,8 @@ const AcademicFieldDialog: FC<AcademicFieldDialogProps> = ({
       title="Academic Fields"
       isOpen={isOpen}
       onOpenChange={setIsOpen}
-      trigger={
-        <Button className="min-h-10" color="cyan">
-          Edit Fields
-        </Button>
-      }
+      triggerColor="ruby"
+      triggerText="Fields"
     >
       <FormWrapper action={addAcademicField} onSuccess={handleFormSuccess}>
         <Flex direction="column" gap="3">

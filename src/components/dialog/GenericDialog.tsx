@@ -1,14 +1,15 @@
 'use client'
 
 import { Cross2Icon } from '@radix-ui/react-icons'
-import { Dialog } from '@radix-ui/themes'
+import { Button, Dialog } from '@radix-ui/themes'
 import React, { FC, ReactNode } from 'react'
 
 interface GenericFormDialogProps {
   children: ReactNode
   title: string
   description?: string
-  trigger: ReactNode
+  triggerText: string
+  triggerColor: 'ruby' | 'cyan' | 'orange' | 'gray' | 'green' | 'blue'
   isOpen: boolean
   onOpenChange: (isOpen: boolean) => void
 }
@@ -17,13 +18,18 @@ const GenericDialog: FC<GenericFormDialogProps> = ({
   children,
   title,
   description,
-  trigger,
+  triggerText,
+  triggerColor,
   isOpen,
   onOpenChange
 }) => {
   return (
     <Dialog.Root open={isOpen} onOpenChange={onOpenChange}>
-      <Dialog.Trigger>{trigger}</Dialog.Trigger>
+      <Dialog.Trigger>
+        <Button className="min-h-10 w-20" color={triggerColor}>
+          {triggerText}
+        </Button>
+      </Dialog.Trigger>
       <Dialog.Content>
         <Cross2Icon
           color="gray"
