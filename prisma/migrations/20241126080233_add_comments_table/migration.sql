@@ -11,7 +11,6 @@ CREATE TABLE "comment" (
     "created_date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_date" TIMESTAMP(3) NOT NULL,
     "text" TEXT NOT NULL,
-    "author_login" TEXT NOT NULL,
     "rating" "rating" NOT NULL,
     "comment_type" "comment_type" NOT NULL,
 

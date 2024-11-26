@@ -64,7 +64,7 @@ const FormWrapper: FC<FormInDialogProps> = ({
         {children}
         <Flex justify="end" gap="2" mt="4">
           {refreshButton && (
-            <Button type="button" color="bronze" onClick={() => window.location.reload()}>
+            <Button type="button" color="green" onClick={() => window.location.reload()}>
               <UpdateIcon />
               Refresh (to load changes)
             </Button>

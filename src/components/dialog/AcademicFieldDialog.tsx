@@ -21,7 +21,7 @@ const AcademicFieldDialog: FC<AcademicFieldDialogProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const handleFormSuccess = () => setIsOpen(false)
-  const [newField, setNewField] = useState<string>(allResearchFields[0].name)
+  const [newField, setNewField] = useState<string>(allResearchFields[0]?.name || '')
 
   return (
     <GenericDialog
