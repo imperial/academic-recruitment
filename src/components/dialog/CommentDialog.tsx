@@ -7,7 +7,7 @@ import { addComment } from '@/lib/forms'
 import { prettifyCapitalisedEnumValue } from '@/lib/utils'
 import { CommentType, Rating } from '@prisma/client'
 import { Pencil2Icon } from '@radix-ui/react-icons'
-import { Box, Button, Tabs, TextArea } from '@radix-ui/themes'
+import { Box, Button, Flex, Tabs, Text, TextArea } from '@radix-ui/themes'
 import { FC, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -59,12 +59,15 @@ const CommentDialog: FC<CommentDialogProps> = ({ applicationId }) => {
         </Tabs.Root>
       </Box>
 
-      <Dropdown
-        choices={Object.keys(Rating)}
-        currentChoice={rating}
-        onChoiceChange={(value) => setRating(value as Rating)}
-        valueFormatter={prettifyCapitalisedEnumValue}
-      />
+      <Flex align="center" gap="2" className="mb-2">
+        <Text>Rating:</Text>
+        <Dropdown
+          choices={Object.keys(Rating)}
+          currentChoice={rating}
+          onChoiceChange={(value) => setRating(value as Rating)}
+          valueFormatter={prettifyCapitalisedEnumValue}
+        />
+      </Flex>
       <FormWrapper
         submitButtonText="Add comment"
         submitIcon={<Pencil2Icon />}

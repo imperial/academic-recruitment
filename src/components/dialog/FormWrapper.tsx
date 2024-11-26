@@ -49,33 +49,33 @@ const FormWrapper: FC<FormInDialogProps> = ({
 
   const [state, formAction] = useActionState(wrappedAction, { status: '', message: '' })
   return (
-    <Flex direction="column" gap="2">
-      {!!state.message && (
-        <Callout.Root size="1" color={state.status === 'success' ? 'green' : 'red'}>
-          <Callout.Icon>
-            {state.status === 'success' && <CheckCircledIcon />}
-            {state.status === 'error' && <CrossCircledIcon />}
-          </Callout.Icon>
-          <Callout.Text>{state.message}</Callout.Text>
-        </Callout.Root>
-      )}
+    <form action={formAction} onSubmit={() => setPending(true)}>
+      {children}
 
-      <form action={formAction} onSubmit={() => setPending(true)}>
-        {children}
-        <Flex justify="end" gap="2" mt="4">
-          {refreshButton && (
-            <Button type="button" color="green" onClick={() => window.location.reload()}>
-              <UpdateIcon />
-              Refresh (to load changes)
-            </Button>
+      <Flex align="center" justify="end" gap="2" mt="4">
+        <Flex justify="start">
+          {!!state.message && (
+            <Callout.Root size="1" color={state.status === 'success' ? 'green' : 'red'}>
+              <Callout.Icon>
+                {state.status === 'success' && <CheckCircledIcon />}
+                {state.status === 'error' && <CrossCircledIcon />}
+              </Callout.Icon>
+              <Callout.Text>{state.message}</Callout.Text>
+            </Callout.Root>
           )}
-          <Button type="submit" disabled={pending || readOnly}>
-            {pending ? <Spinner /> : (submitButtonText ?? DEFAULT_SUBMIT_BTN_TEXT)}
-            {submitIcon}
-          </Button>
         </Flex>
-      </form>
-    </Flex>
+        {refreshButton && (
+          <Button type="button" color="green" onClick={() => window.location.reload()}>
+            <UpdateIcon />
+            Refresh (to load changes)
+          </Button>
+        )}
+        <Button type="submit" disabled={pending || readOnly}>
+          {pending ? <Spinner /> : (submitButtonText ?? DEFAULT_SUBMIT_BTN_TEXT)}
+          {submitIcon}
+        </Button>
+      </Flex>
+    </form>
   )
 }
 
