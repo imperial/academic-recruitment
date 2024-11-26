@@ -2,6 +2,7 @@
 
 import Dropdown from '@/components/Dropdown'
 import AcademicFieldDialog from '@/components/dialog/AcademicFieldDialog'
+import CommentDialog from '@/components/dialog/CommentDialog'
 import GenericTable, { updateOrAddColumnFilter } from '@/components/table/GenericTable'
 import { prettifyCapitalisedEnumValue } from '@/lib/utils'
 import { Application, ResearchField, Stage } from '@prisma/client'
@@ -65,11 +66,16 @@ const ApplicationTable: FC<ApplicationTableProps> = ({ applications, allResearch
         id: 'forms',
         header: 'Forms',
         cell: (info) => (
-          <AcademicFieldDialog
-            applicationId={info.row.original.id}
-            allResearchFields={allResearchFields}
-            applicationResearchFields={info.row.original.researchFields.map((field) => field.name)}
-          />
+          <Flex gap="1">
+            <AcademicFieldDialog
+              applicationId={info.row.original.id}
+              allResearchFields={allResearchFields}
+              applicationResearchFields={info.row.original.researchFields.map(
+                (field) => field.name
+              )}
+            />
+            <CommentDialog applicationId={info.row.original.id} />
+          </Flex>
         )
       })
     ],
