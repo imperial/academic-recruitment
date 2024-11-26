@@ -8,7 +8,7 @@ import { addComment } from '@/lib/forms'
 import { prettifyCapitalisedEnumValue } from '@/lib/utils'
 import { Comment, CommentType, Rating } from '@prisma/client'
 import { Pencil2Icon } from '@radix-ui/react-icons'
-import { Box, Flex, Tabs, Text, TextArea } from '@radix-ui/themes'
+import { Box, Flex, Separator, Tabs, Text, TextArea } from '@radix-ui/themes'
 import { FC, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -77,15 +77,8 @@ const CommentDialog: FC<CommentDialogProps> = ({ applicationId, comments }) => {
         </Tabs.Root>
       </Box>
 
-      <Flex align="center" gap="2" className="mb-2">
-        <Text>Rating:</Text>
-        <Dropdown
-          choices={Object.keys(Rating)}
-          currentChoice={rating}
-          onChoiceChange={(value) => setRating(value as Rating)}
-          valueFormatter={prettifyCapitalisedEnumValue}
-        />
-      </Flex>
+      <Separator size="4" className="my-3 border-4" />
+
       <FormWrapper
         submitButtonText="Add comment"
         submitIcon={<Pencil2Icon />}
@@ -97,6 +90,15 @@ const CommentDialog: FC<CommentDialogProps> = ({ applicationId, comments }) => {
         <input type="hidden" {...register('commentType')} value={commentType.toUpperCase()} />
         <input type="hidden" {...register('rating')} value={rating.toUpperCase()} />
         <TextArea {...register('text')} placeholder="Leave a comment about the candidate here..." />
+        <Flex align="center" gap="2" className="my-2">
+          <Text>Rating:</Text>
+          <Dropdown
+            choices={Object.keys(Rating)}
+            currentChoice={rating}
+            onChoiceChange={(value) => setRating(value as Rating)}
+            valueFormatter={prettifyCapitalisedEnumValue}
+          />
+        </Flex>
       </FormWrapper>
     </GenericDialog>
   )
