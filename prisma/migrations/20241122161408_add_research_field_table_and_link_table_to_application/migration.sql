@@ -23,3 +23,5 @@ ALTER TABLE "application_research_field" ADD CONSTRAINT "application_research_fi
 
 -- AddForeignKey
 ALTER TABLE "application_research_field" ADD CONSTRAINT "application_research_field_research_field_id_fkey" FOREIGN KEY ("research_field_id") REFERENCES "research_field"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+INSERT INTO "research_field" ("name") VALUES ('AI + ML'), ('Vision and Graphics'), ('Quantum'), ('Software Engineering'), ('Miscellaneous');
